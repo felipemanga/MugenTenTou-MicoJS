@@ -1,16 +1,14 @@
-
-"push title MicoJS Demo1";
+"push title Mugen TenTou";
 "push author FManga";
 "push description A MicoJS game";
-"set version v0.0.1";
+"set version v1.0.1";
 "set category demo";
 "set url https://micojs.github.com";
-
-"include /source/RandWord.js"
+"push header-cpp #define OVERCLOCK 1"; // Applies for META only
 
 let CAMERA_Z = 0;
 const MAX_CORRIDOR = 10;
-const CORRIDOR_SCALE = 8;
+const CORRIDOR_SCALE = 10;
 const CORRIDOR_WIDTH = 1024 * 2;
 const MAX_CAMERA_X = CORRIDOR_WIDTH / 2 - 200;
 
@@ -18,7 +16,7 @@ const DEFAULT_AGILITY = 40;
 const DEFAULT_MAXHP = 50;
 const DEFAULT_LUCK = 25;
 const DEFAULT_SPEED = 1;
-let score = 0;
+let score = -1;
 let agility = DEFAULT_AGILITY;
 let speed = DEFAULT_SPEED;;
 let maxhp = DEFAULT_MAXHP;
@@ -199,7 +197,7 @@ const humanNames = [
     "*1AIUEO"
 ];
 
-let bgColor = 1; // setPen(9, 10, 20);
+let bgColor = 5; // setPen(9, 10, 20);
 const txtColor = setPen(64, 128, 255);
 let screenWidth, screenHeight;
 let spriteScale;
@@ -291,6 +289,7 @@ function updateShip() {
 
 function drawShip() {
     if (hp <= 0) {
+        setPen(0);
         image(R.title, halfWidth, halfHeight);
         return;
     }
@@ -315,7 +314,7 @@ function drawShip() {
         text(lastDMG, sx, sy - 30 + flashShip);
     }
     if (hp != maxhp) {
-        drawBar(sx, sy + 20, hp, maxhp, 3);
+        drawBar(sx, sy + 15 * spriteScale, hp, maxhp, 3);
     }
 }
 
@@ -628,7 +627,7 @@ function drawPUP() {
 function init() {
     screenWidth = getWidth();
     screenHeight = getHeight();
-    spriteScale = screenWidth / 128;
+    spriteScale = screenWidth / 200;
     halfWidth = screenWidth / 2;
     halfHeight = screenHeight / 2;
     setFPS(30);
@@ -690,7 +689,11 @@ function render() {
         text(activePUP.name, 10, screenHeight - 10);
     }
 
-    setPen(SCORE_COLOR);
-    setFont(R.fontDonut);
-    text(score|0, screenWidth/2 - 20, 10);
+    if (score > 0) {
+        setPen(SCORE_COLOR);
+        setFont(R.fontDonut);
+        text(score|0, screenWidth/2 - 20, 10);
+    }
+
+    // text(1000 / FRAMETIME, 10, 50);
 }
